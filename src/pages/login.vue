@@ -29,7 +29,7 @@ import { useTimeout, promiseTimeout } from "@vueuse/core";
         <button type="submit" @submit.prevent="login(username,password)" class="rounded-lg bg-blue-600 text-blue-200">Login</button>
     </form>
 </div>
-<div class="absolute w-1/3 bg-red-500 text-xl bottom-2 right-2 rounded-lg p-4 text-center text-pink-200">
+<div class="absolute w-1/3 bg-pink-400 text-3xl bottom-2 right-2 rounded-lg p-4 text-center text-yellow-300">
     Logged In: {{isAuthenticated}}
 </div>
 

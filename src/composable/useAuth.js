@@ -1,31 +1,41 @@
 import { ref } from "vue";
 
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "firebase/auth";
+
+import { firebaseAuth } from "./useFirebase";
+
 const isAuthenticated = ref(false);
 
 const user = ref("");
 
-const usersFromDB = [{username: "admin", password: "admin", name: "Administrator"},
-  {username: "blopez", password: "blopez", name: "Brandon"}
-];
-
 const useAuth = () => {
-  const login = (username, password) => {
-    const userFromDB = usersFromDB.find(
-      (user) => user.username === username && user.password === password
-    );
+  const login = async (username, password) => {
+  const response = await signInWithEmailAndPassword(firebaseAuth, username, password);
 
-    if (userFromDB) {
-      isAuthenticated.value = true;
-      user.value = userFromDB.name;
-    }
+  if(response.user)
+  {
+    isAuthenticated.value = true;
+    user.value = response.user.email;
+  }
   };
 
-  const logout = () => {
+  const signup = async (username, password) => {
+    const response = await createUserWithEmailAndPassword(firebaseAuth, username, password);
+  
+    if(response.user)
+    {
+      isAuthenticated.value = true;
+      user.value = response.user.email;
+    }
+    };
+
+  const logout = async () => {
+    await signOut(firebaseAuth)
     isAuthenticated.value = false;
     user.value = "";
   };
 
-  return { isAuthenticated, login, logout, user };
+  return { isAuthenticated, login, signup, logout, user };
 };
 
 export default useAuth;
